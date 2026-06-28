@@ -7,88 +7,109 @@ function FilterPopup({
   filters,
   setFilters,
 }) {
+  function handleChange(event) {
+    const { name, value } = event.target;
+
+    setFilters((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  }
+
+  function handleReset() {
+    setFilters({
+      firstName: "",
+      lastName: "",
+      email: "",
+      department: "",
+    });
+  }
+
+  function handleApply() {
+    onClose();
+  }
+
   return (
     <Modal
       isOpen={isOpen}
       title="Filter Users"
       onClose={onClose}
     >
-      <input
-        placeholder="First Name"
-        value={filters.firstName}
-        onChange={(e) =>
-          setFilters({
-            ...filters,
-            firstName: e.target.value,
-          })
-        }
-      />
+      <div className="filter-popup">
 
-      <input
-        placeholder="Last Name"
-        value={filters.lastName}
-        onChange={(e) =>
-          setFilters({
-            ...filters,
-            lastName: e.target.value,
-          })
-        }
-      />
+        <div className="form-group">
+          <label>First Name</label>
 
-      <input
-        placeholder="Email"
-        value={filters.email}
-        onChange={(e) =>
-          setFilters({
-            ...filters,
-            email: e.target.value,
-          })
-        }
-      />
+          <input
+            type="text"
+            name="firstName"
+            value={filters.firstName}
+            onChange={handleChange}
+            placeholder="Enter first name"
+          />
+        </div>
 
-      <select
-        value={filters.department}
-        onChange={(e)=>
-          setFilters({
-            ...filters,
-            department:e.target.value
-          })
-        }
-      >
+        <div className="form-group">
+          <label>Last Name</label>
 
-        <option value="">All Departments</option>
+          <input
+            type="text"
+            name="lastName"
+            value={filters.lastName}
+            onChange={handleChange}
+            placeholder="Enter last name"
+          />
+        </div>
 
-        <option>Engineering</option>
-        <option>HR</option>
-        <option>Finance</option>
-        <option>Marketing</option>
-        <option>Sales</option>
-        <option>Operations</option>
-        <option>Support</option>
-        <option>IT</option>
+        <div className="form-group">
+          <label>Email</label>
 
-      </select>
+          <input
+            type="text"
+            name="email"
+            value={filters.email}
+            onChange={handleChange}
+            placeholder="Enter email"
+          />
+        </div>
 
-      <div className="filter-buttons">
+        <div className="form-group">
+          <label>Department</label>
 
-        <button onClick={onClose}>
-          Apply
-        </button>
+          <select
+            name="department"
+            value={filters.department}
+            onChange={handleChange}
+          >
+            <option value="">All Departments</option>
+            <option value="Engineering">Engineering</option>
+            <option value="HR">HR</option>
+            <option value="Finance">Finance</option>
+            <option value="Marketing">Marketing</option>
+            <option value="Sales">Sales</option>
+            <option value="Operations">Operations</option>
+            <option value="Support">Support</option>
+            <option value="IT">IT</option>
+          </select>
+        </div>
 
-        <button
-          onClick={()=>
-          setFilters({
-            firstName:"",
-            lastName:"",
-            email:"",
-            department:""
-          })}
-        >
-          Reset
-        </button>
+        <div className="filter-actions">
+          <button
+            className="reset-btn"
+            onClick={handleReset}
+          >
+            Reset
+          </button>
+
+          <button
+            className="apply-btn"
+            onClick={handleApply}
+          >
+            Apply
+          </button>
+        </div>
 
       </div>
-
     </Modal>
   );
 }

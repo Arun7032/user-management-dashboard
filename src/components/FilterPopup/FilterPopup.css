@@ -1,19 +1,55 @@
-.filter-buttons{
-
-display:flex;
-
-justify-content:flex-end;
-
-gap:10px;
-
-margin-top:20px;
-
+.filter-popup{
+    display:flex;
+    flex-direction:column;
+    gap:16px;
 }
 
-.filter-buttons button{
+.form-group{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+}
 
-padding:10px 20px;
+.form-group label{
+    font-weight:600;
+}
 
-cursor:pointer;
+.form-group input,
+.form-group select{
+    padding:10px;
+    border:1px solid #ccc;
+    border-radius:6px;
+}
 
+.filter-actions{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-top:10px;
+}
+
+.reset-btn{
+    background:#757575;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.apply-btn{
+    background:#1976d2;
+    color:white;
+    border:none;
+    padding:10px 18px;
+    border-radius:6px;
+    cursor:pointer;
+}
+
+.reset-btn:hover{
+    background:#616161;
+}
+
+.apply-btn:hover{
+    background:#1565c0;
 }

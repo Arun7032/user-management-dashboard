@@ -1,8 +1,9 @@
 import Dashboard from "./pages/Dashboard/Dashboard";
+import "./index.css";
 
 function App() {
   return (
-    <div style={{ padding: "30px" }}>
+    <div className="app">
       <Dashboard />
     </div>
   );

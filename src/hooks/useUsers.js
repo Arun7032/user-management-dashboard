@@ -1,9 +1,16 @@
+
 import { useEffect, useMemo, useState } from "react";
-import { getUsers } from "../services/api";
+import {
+  getUsers,
+  createUser,
+  updateUser,
+  deleteUser,
+} from "../services/api";
 import { sortUsers } from "../utils/sorting";
 
 export function useUsers() {
-  const [users, setUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -21,31 +28,88 @@ export function useUsers() {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   useEffect(() => {
-    async function fetchUsers() {
-      try {
-        const data = await getUsers();
-        setUsers(data);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    }
-
     fetchUsers();
   }, []);
+
+  async function fetchUsers() {
+    try {
+      setLoading(true);
+
+      const data = await getUsers();
+
+      // Create 100 mock users for pagination
+      const expandedUsers = [];
+
+      for (let i = 0; i < 10; i++) {
+        data.forEach((user) => {
+          expandedUsers.push({
+            ...user,
+            id: user.id + i * 10,
+            email: `${user.firstName.toLowerCase()}${user.id + i * 10}@example.com`,
+          });
+        });
+      }
+
+      setAllUsers(expandedUsers);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  async function addUser(user) {
+    try {
+      await createUser(user);
+
+      const newUser = {
+        ...user,
+        id: Date.now(),
+      };
+
+      setAllUsers((prev) => [newUser, ...prev]);
+    } catch (err) {
+      alert(err.message);
+    }
+  }
+
+  async function editUser(updatedUser) {
+    try {
+      await updateUser(updatedUser);
+
+      setAllUsers((prev) =>
+        prev.map((user) =>
+          user.id === updatedUser.id ? updatedUser : user
+        )
+      );
+    } catch (err) {
+      alert(err.message);
+    }
+  }
+
+  async function removeUser(id) {
+    try {
+      await deleteUser(id);
+
+      setAllUsers((prev) =>
+        prev.filter((user) => user.id !== id)
+      );
+    } catch (err) {
+      alert(err.message);
+    }
+  }
 
   const filteredUsers = useMemo(() => {
     const search = searchTerm.toLowerCase();
 
-    return users.filter((user) => {
+    return allUsers.filter((user) => {
       const matchesSearch =
         user.firstName.toLowerCase().includes(search) ||
         user.lastName.toLowerCase().includes(search) ||
         user.email.toLowerCase().includes(search) ||
         user.department.toLowerCase().includes(search);
 
-      const matchesFilters =
+      const matchesFilter =
         user.firstName
           .toLowerCase()
           .includes(filters.firstName.toLowerCase()) &&
@@ -59,9 +123,9 @@ export function useUsers() {
           .toLowerCase()
           .includes(filters.department.toLowerCase());
 
-      return matchesSearch && matchesFilters;
+      return matchesSearch && matchesFilter;
     });
-  }, [users, searchTerm, filters]);
+  }, [allUsers, searchTerm, filters]);
 
   const sortedUsers = useMemo(() => {
     return sortUsers(filteredUsers, sortOption);
@@ -69,16 +133,26 @@ export function useUsers() {
 
   const totalUsers = sortedUsers.length;
 
-  const indexOfLastUser = currentPage * rowsPerPage;
-  const indexOfFirstUser = indexOfLastUser - rowsPerPage;
+  const totalPages = Math.ceil(totalUsers / rowsPerPage);
 
-  const paginatedUsers = sortedUsers.slice(
-    indexOfFirstUser,
-    indexOfLastUser
-  );
+  useEffect(() => {
+    if (currentPage > totalPages && totalPages > 0) {
+      setCurrentPage(totalPages);
+    }
+  }, [currentPage, totalPages]);
+
+  const users = useMemo(() => {
+    const start = (currentPage - 1) * rowsPerPage;
+    const end = start + rowsPerPage;
+
+    return sortedUsers.slice(start, end);
+  }, [sortedUsers, currentPage, rowsPerPage]);
 
   return {
-    users: paginatedUsers,
+    users,
+
+    loading,
+    error,
 
     totalUsers,
 
@@ -87,9 +161,6 @@ export function useUsers() {
 
     rowsPerPage,
     setRowsPerPage,
-
-    loading,
-    error,
 
     searchTerm,
     setSearchTerm,
@@ -100,6 +171,10 @@ export function useUsers() {
     filters,
     setFilters,
 
-    setUsers,
+    addUser,
+    editUser,
+    removeUser,
+
+    refreshUsers: fetchUsers,
   };
 }

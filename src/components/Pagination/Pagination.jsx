@@ -7,12 +7,16 @@ function Pagination({
   setRowsPerPage,
   totalUsers,
 }) {
-  const totalPages = Math.ceil(totalUsers / rowsPerPage);
+  const totalPages = Math.max(
+    1,
+    Math.ceil(totalUsers / rowsPerPage)
+  );
 
   return (
     <div className="pagination">
-      <div>
-        <label>Rows Per Page: </label>
+
+      <div className="pagination-left">
+        <span>Rows per page</span>
 
         <select
           value={rowsPerPage}
@@ -28,25 +32,30 @@ function Pagination({
         </select>
       </div>
 
-      <div>
+      <div className="pagination-right">
         <button
           disabled={currentPage === 1}
-          onClick={() => setCurrentPage(currentPage - 1)}
+          onClick={() =>
+            setCurrentPage(currentPage - 1)
+          }
         >
           Previous
         </button>
 
         <span>
-          Page {currentPage} of {totalPages || 1}
+          {currentPage} / {totalPages}
         </span>
 
         <button
-          disabled={currentPage === totalPages || totalPages === 0}
-          onClick={() => setCurrentPage(currentPage + 1)}
+          disabled={currentPage === totalPages}
+          onClick={() =>
+            setCurrentPage(currentPage + 1)
+          }
         >
           Next
         </button>
       </div>
+
     </div>
   );
 }

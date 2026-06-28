@@ -1,13 +1,18 @@
 import "./SearchBar.css";
 
-function SearchBar({ searchTerm, setSearchTerm }) {
+function SearchBar({
+  searchTerm,
+  setSearchTerm,
+}) {
   return (
-    <div className="search-container">
+    <div className="search-bar">
       <input
         type="text"
-        placeholder="Search by name, email or department..."
+        placeholder="Search by first name, last name, email or department..."
         value={searchTerm}
-        onChange={(event) => setSearchTerm(event.target.value)}
+        onChange={(e) =>
+          setSearchTerm(e.target.value)
+        }
       />
     </div>
   );

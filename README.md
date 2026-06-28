@@ -1,16 +1,115 @@
-# React + Vite
+# User Management Dashboard
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A React-based User Management Dashboard built using Vite.
 
-Currently, two official plugins are available:
+## Features
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- View Users
+- Search Users
+- Sort Users
+- Filter Users
+- Pagination
+- Add User
+- Edit User
+- Delete User
+- Responsive UI
+- Form Validation
+- Error Handling
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Tech Stack
 
-## Expanding the ESLint configuration
+- React
+- Vite
+- JavaScript
+- CSS
+- Fetch API
+- Vitest
+- React Testing Library
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+---
+
+## Installation
+
+Clone the repository
+
+```bash
+git clone <repository-url>
+```
+
+Install dependencies
+
+```bash
+npm install
+```
+
+Run development server
+
+```bash
+npm run dev
+```
+
+---
+
+## Build
+
+```bash
+npm run build
+```
+
+---
+
+## Preview
+
+```bash
+npm run preview
+```
+
+---
+
+## Run Tests
+
+```bash
+npm test
+```
+
+---
+
+## Project Structure
+
+src
+
+├── components
+
+├── hooks
+
+├── pages
+
+├── services
+
+├── utils
+
+├── App.jsx
+
+└── main.jsx
+
+---
+
+## API
+
+https://jsonplaceholder.typicode.com/users
+
+---
+
+## Assumptions
+
+- JSONPlaceholder does not persist data.
+- CRUD operations update local state after successful API requests.
+- Department values are simulated because the API does not provide them.
+
+---
+
+## Author
+
+Arunkumar Nethikunta

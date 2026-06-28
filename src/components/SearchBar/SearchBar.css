@@ -1,11 +1,25 @@
-.search-container {
-  margin: 20px 0;
+.search-bar {
+  width: 100%;
 }
 
-.search-container input {
+.search-bar input {
   width: 100%;
-  padding: 12px;
-  font-size: 16px;
-  border: 1px solid #ccc;
+
+  padding: 10px 14px;
+
+  border: 1px solid #d1d5db;
+
   border-radius: 6px;
+
+  font-size: 15px;
+
+  outline: none;
+
+  transition: 0.2s ease;
+}
+
+.search-bar input:focus {
+  border-color: #1976d2;
+
+  box-shadow: 0 0 5px rgba(25, 118, 210, 0.25);
 }

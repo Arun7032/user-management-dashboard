@@ -1,0 +1,40 @@
+.user-form{
+
+display:flex;
+
+flex-direction:column;
+
+gap:10px;
+
+}
+
+.user-form input,
+.user-form select{
+
+padding:10px;
+
+font-size:15px;
+
+}
+
+.user-form button{
+
+padding:12px;
+
+background:#1976d2;
+
+color:white;
+
+border:none;
+
+cursor:pointer;
+
+}
+
+.user-form small{
+
+color:red;
+
+font-size:13px;
+
+}
