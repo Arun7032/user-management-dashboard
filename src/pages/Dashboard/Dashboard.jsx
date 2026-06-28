@@ -1,44 +1,28 @@
-import { useEffect, useState } from "react";
-import { getUsers } from "../../services/api";
-import { sortUsers } from "../../utils/sorting";
+import { useState } from "react";
+
+import { useUsers } from "../../hooks/useUsers";
 
 import SearchBar from "../../components/SearchBar/SearchBar";
 import UserTable from "../../components/UserTable/UserTable";
+import FilterPopup from "../../components/FilterPopup/FilterPopup";
 
 function Dashboard() {
-  const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [searchTerm, setSearchTerm] = useState("");
-  const [sortOption, setSortOption] = useState("");
+  const {
+    users,
+    loading,
+    error,
 
-  useEffect(() => {
-    async function fetchUsers() {
-      try {
-        const data = await getUsers();
-        setUsers(data);
-      } catch (error) {
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    }
+    searchTerm,
+    setSearchTerm,
 
-    fetchUsers();
-  }, []);
+    sortOption,
+    setSortOption,
 
-  const filteredUsers = users.filter((user) => {
-    const search = searchTerm.toLowerCase();
+    filters,
+    setFilters,
+  } = useUsers();
 
-    return (
-      user.firstName.toLowerCase().includes(search) ||
-      user.lastName.toLowerCase().includes(search) ||
-      user.email.toLowerCase().includes(search) ||
-      user.department.toLowerCase().includes(search)
-    );
-  });
-
-  const sortedUsers = sortUsers(filteredUsers, sortOption);
+  const [isFilterOpen, setIsFilterOpen] = useState(false);
 
   if (loading) {
     return <h2>Loading users...</h2>;
@@ -97,9 +81,20 @@ function Dashboard() {
             Department (Z-A)
           </option>
         </select>
+
+        <button onClick={() => setIsFilterOpen(true)}>
+          Filter
+        </button>
       </div>
 
-      <UserTable users={sortedUsers} />
+      <UserTable users={users} />
+
+      <FilterPopup
+        isOpen={isFilterOpen}
+        onClose={() => setIsFilterOpen(false)}
+        filters={filters}
+        setFilters={setFilters}
+      />
     </>
   );
 }
