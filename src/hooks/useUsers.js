@@ -36,21 +36,7 @@ export function useUsers() {
       setLoading(true);
 
       const data = await getUsers();
-
-      // Create 100 mock users for pagination
-      const expandedUsers = [];
-
-      for (let i = 0; i < 10; i++) {
-        data.forEach((user) => {
-          expandedUsers.push({
-            ...user,
-            id: user.id + i * 10,
-            email: `${user.firstName.toLowerCase()}${user.id + i * 10}@example.com`,
-          });
-        });
-      }
-
-      setAllUsers(expandedUsers);
+setAllUsers(data);
     } catch (err) {
       setError(err.message);
     } finally {
