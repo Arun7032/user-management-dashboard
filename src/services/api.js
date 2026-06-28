@@ -12,13 +12,28 @@ export const departments = [
   "IT",
 ];
 
+const titles = ["Mr.", "Mrs.", "Ms.", "Miss", "Dr.", "Prof."];
+
+function splitName(fullName) {
+  const parts = fullName.trim().split(" ");
+
+  if (titles.includes(parts[0])) {
+    parts.shift(); // Remove the title
+  }
+
+  return {
+    firstName: parts[0] || "",
+    lastName: parts.slice(1).join(" "),
+  };
+}
+
 function transformUser(user) {
-  const nameParts = user.name.split(" ");
+  const { firstName, lastName } = splitName(user.name);
 
   return {
     id: user.id,
-    firstName: nameParts[0],
-    lastName: nameParts.slice(1).join(" "),
+    firstName,
+    lastName,
     email: user.email,
     department: departments[user.id % departments.length],
   };
