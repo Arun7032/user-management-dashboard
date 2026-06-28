@@ -17,6 +17,9 @@ export function useUsers() {
     department: "",
   });
 
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
   useEffect(() => {
     async function fetchUsers() {
       try {
@@ -64,8 +67,27 @@ export function useUsers() {
     return sortUsers(filteredUsers, sortOption);
   }, [filteredUsers, sortOption]);
 
+  const totalUsers = sortedUsers.length;
+
+  const indexOfLastUser = currentPage * rowsPerPage;
+  const indexOfFirstUser = indexOfLastUser - rowsPerPage;
+
+  const paginatedUsers = sortedUsers.slice(
+    indexOfFirstUser,
+    indexOfLastUser
+  );
+
   return {
-    users: sortedUsers,
+    users: paginatedUsers,
+
+    totalUsers,
+
+    currentPage,
+    setCurrentPage,
+
+    rowsPerPage,
+    setRowsPerPage,
+
     loading,
     error,
 
